@@ -1,0 +1,110 @@
+@import 'materialize-css/dist/css/materialize';
+
+.header-wrap {
+  height: 130px;
+  background-image: url('https://www.biathlonworld.com/Images/ml/common/header-texture.png');
+
+  header {
+    display: table;
+
+    .logo {
+      width: 126px;
+      height: 126px;
+      display: table-cell;
+      background-image: url('https://www.biathlonworld.com/Images/ml/common/logo.svg');
+      background-repeat: no-repeat;
+      vertical-align: middle;
+      background-size: 121px 130px;
+      background-position: 0 -18px;
+      margin-left: 0;
+    }
+  }
+}
+
+body.home {
+  .events {
+    .collapsible-header {
+      line-height: 1.1;
+
+      .event--date {
+        width: 105px;
+        display: inline-block;
+        font-size: 14px;
+        vertical-align: middle;
+
+        .date {
+          display: block;
+          line-height: 1.1;
+        }
+      }
+
+      .event--name {
+        color: #009cd9;
+        width: calc(70% - 105px);
+        display: inline-block;
+        font-size: 20px;
+        vertical-align: middle;
+        margin: 5px 0;
+        font-weight: 500;
+      }
+
+      .event--country {
+        vertical-align: middle;
+        display: inline-block;
+        margin: 0;
+
+        &--flag {
+          display: inline-block;
+          vertical-align: middle;
+
+          img {
+            width: 32px;
+          }
+        }
+
+        &--name {
+          display: inline-block;
+          vertical-align: middle;
+        }
+      }
+
+      i {
+        right: 10px;
+      }
+    }
+
+    .collapsible-body {
+      padding: 0;
+    }
+  }
+
+  .competitions {
+    padding-left: 20px;
+
+    .competition--date {
+      width: 105px;
+      display: inline-block;
+      font-size: 12px;
+      vertical-align: middle;
+
+      .date, .hour {
+        display: block;
+        line-height: 1.1;
+      }
+
+      .competition--name {
+        color: #009cd9;
+        width: calc(70% - 105px);
+        display: inline-block;
+        font-size: 18px;
+        vertical-align: middle;
+        margin: 5px 0;
+        font-weight: 500;
+      }
+    }
+  }
+}
+
+body.race {
+
+}

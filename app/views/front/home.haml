@@ -1,0 +1,23 @@
+.container
+  - if false
+    .row
+      .input-field.col.s12.m3.l2.xl2
+        = select_year(Date.today, start_year: 2000, end_year: 2021)
+
+  %ul.events.collapsible
+    %li
+      .collapsible-header{style: "cursor: initial;"} Events IBU World Cup 2020-2021
+    - @events.each_with_index do |event, index|
+      %li{id: "event-#{index}"}
+        .collapsible-header{"data-event-id": event["EventId"], "data-element-id": "event-#{index}"}
+          %span.event--date
+            %span.date= event["StartDate"].to_datetime.strftime("%d %b %Y")
+            %span.date= event["EndDate"].to_datetime.strftime("%d %b %Y")
+          %span.event--name= event["Description"]
+          %span.event--country
+            %span.event--country--flag
+              %img{src: "https://www.biathlonworld.com/Images/ml/flags/m/#{event["Nat"]}.png"}
+            %span.event--country--name= event["NatLong"]
+          %i.fa.fa-angle-down.dcm-toggle-icon
+        .collapsible-body
+          in progress...

@@ -1,0 +1,9 @@
+%ul.collection.competitions
+  - @competitions.each do |competition|
+    %li.collection-item
+      %span.competition--date
+        %span.date= competition["StartTime"].to_date.strftime("%d %b %Y")
+        %span.hour= competition["StartTime"].to_datetime.strftime("%H:%M")
+      %span.competition--name= competition["ShortDescription"]
+      - if competition["StatusText"] == "Final"
+        = link_to("see result ->", race_path(race_id: competition["RaceId"]), class: "right")

@@ -1,0 +1,29 @@
+.container
+  - if @race["IsResult"]
+    %h2
+      = @race["Competition"]["ShortDescription"]
+      %span.right= @race["Competition"]["StatusText"]
+
+    %table
+      %thead
+        %tr
+          %td Rank
+          %td Bib
+          %td Name
+          %td Nationality
+          %td Shooting
+          %td Shooting Total
+          %td.right Result
+      %tbody
+        - @race["Results"].each do |athlete|
+          %tr
+            %td= athlete["Rank"]
+            %td= athlete["Bib"]
+            %td= athlete["Name"]
+            %td= athlete["Nat"]
+            %td= athlete["Shootings"]
+            %td= athlete["ShootingTotal"]
+            %td.right= athlete["Result"]
+
+  - else
+    %h1.center The race is not done...
