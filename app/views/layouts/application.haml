@@ -12,10 +12,17 @@
     %link{href: "https://fonts.googleapis.com/icon?family=Material+Icons", rel: "stylesheet"}
 
   %body{class: @body_classes}
-    .header-wrap
-      .container
-        %header
-          = link_to(root_path) do
-            .logo
+    %nav
+      .nav-wrapper.row
+        .col.s12
+          = link_to("IBU", root_path, class: "brand-logo")
+          %ul#nav-mobile.right.hide-on-med-and-down
+            %li
+              = link_to(standings_path(:men), class: "dropdown-trigger", "data-target": "dropdown1") do
+                Standings
+                %i.material-icons.right
 
     = yield
+
+  - if @standings
+    = render partial: "standings_script"

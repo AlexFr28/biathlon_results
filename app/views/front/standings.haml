@@ -1,0 +1,33 @@
+.container-w95
+  %h5 MEN'S WORLD CUP TOTAL SCORE
+  %table#results
+    %thead
+      %tr
+        %td{colspan: "3"}
+        - @current_season.events.each_with_index do |event, index|
+          %td.column.small-border-left{colspan: event.competitions[@gender].reject{|comp| comp.to_s == "Relay"}.size, class: "#{"border-left" if index == 0}"}= event.location
+      %tr
+        %td Rk
+        %td{style: "width: 250px;"} Name
+        %td.border.center-align{style: "width: 55px;"} Total
+        - @current_season.events.each do |event|
+          - event.competitions[@gender].each_with_index do |competition, index|
+            - next if competition.to_s == "Relay"
+            %td.column.race{class: "#{" small-border-left" if index == 0}", "data-ibu_id": competition.ibu_id}
+              .discipline-medal{class: competition.to_s.parameterize}
+                %div= competition.discipline
+    %tbody
+      - if false
+        %tr#ibu_athlete_id.athlete_row
+          %td.rank 1
+          %td.name BOE Johannes Thingnes
+          %td.total-point.center-align.border 749
+          %td.center-align
+            .medal-circle.second-place
+              %div 54
+          %td.center-align
+            .medal-circle.first-place{"data-rank": "1"}
+              %div 60
+          %td.center-align
+            .medal-circle.third-place
+              %div 46

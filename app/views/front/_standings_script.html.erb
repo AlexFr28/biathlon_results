@@ -1,0 +1,105 @@
+<script type="text/javascript">
+
+  var raceIds = [];
+
+  function contentForRank(rank, points) {
+    result = ""
+    switch (rank) {
+      case "1":
+        result = '<div class="medal-circle first-place"><div>' + points + '</div></div>';
+        break;
+      case "2":
+        result = '<div class="medal-circle second-place"><div>' + points + '</div></div>';
+        break;
+      case "3":
+        result = '<div class="medal-circle third-place"><div>' + points + '</div></div>';
+        break;
+      default:
+        result = '<div>' + points + '</div>';
+    }
+    return result;
+  }
+
+  function addResultInView(elements, currentIndex, currentIndexRace) {
+    // console.log(elements.length, currentIndex);
+    if (currentIndex < elements.length) {
+      if (elements[currentIndex].point != null) {
+        var element = elements[currentIndex];
+        var endTable = $("#results tbody:last-child");
+        var row = '<tr style="display: none;" id= ' + element.ibu_athlete_id + ' class="athlete_row">' +
+          '<td class="rank">' + element.rank + '</td>' +
+          '<td class="name">' + element.name + '</td>' +
+          '<td class="total-point center-align border">' + element.point + '</td>' +
+          '<td class="center-align">' + contentForRank(element.rank, element.point) + '</td>' +
+          '</tr>';
+        endTable.append(row);
+        $('#' + element.ibu_athlete_id + '').fadeIn(400, function() {
+          $(document).scrollTop($(document).height());
+          addResultInView(elements, currentIndex + 1, currentIndexRace);
+        });
+      }
+      else {
+        addResultInView(elements, currentIndex + 1, currentIndexRace)
+      }
+    }
+    else {
+      if (currentIndexRace == 0) addNextRaceResult(currentIndexRace + 1);
+    }
+  }
+
+  function addTdInTr(data, elements, index) {
+    if (index < elements.length) {
+      var element = $.parseHTML(elements[index]);
+      console.log(elements[index]);
+      console.log(element);
+      var data_athlete = data.find(athlete => athlete.ibu_athlete_id === element.id);
+      if (data_athlete == undefined) {
+        var lastElement = $('<td style="display: none;"></td>').insertAfter(element.last());
+      }
+      else {
+        var lastElement = $('<td style="display: none;">' + data_athlete.point + '</td>').insertAfter(element.last());
+      }
+      // console.log($.parseHTML(lastElement));
+
+      addTdInTr(data, elements, index + 1);
+    }
+  }
+
+  function addNextRaceResult(currentRaceIdIndex) {
+    console.log("index colonne", currentRaceIdIndex);
+    if (currentRaceIdIndex < raceIds.length) {
+      $.ajax('competition/' + raceIds[currentRaceIdIndex] + '/results.json', {
+        success: function(data, textStatus, jqXHR) {
+          // console.log("success");
+          addTdInTr(data, $(".athlete_row"), 0);
+          // console.log("first element", data[0]);
+          addResultInView(data, 0, currentRaceIdIndex);
+        },
+        error: function() {
+          // console.log("error");
+        },
+        complete: function() {
+          // console.log("complete");
+        }
+      });
+    }
+  }
+
+  function getAllRaceResults() {
+    addNextRaceResult(0);
+  }
+
+  $(document).ready(function() {
+
+    $(".race").each(function() {
+      raceIds.push($(this).data("ibu_id"));
+    });
+    // console.log("raceIds", raceIds);
+
+    setTimeout(function() {
+      getAllRaceResults(0);
+    }, 1000);
+
+  });
+
+</script>
