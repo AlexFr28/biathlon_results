@@ -4,23 +4,19 @@ class Season
   attr_accessor :events
 
   def initialize(season_id)
-    @id = stringify_season_id(season_id)
+    @id = season_id
     @events = get_events
   end
 
-  private
+  def self.current_season_id
+    prev_year = Date.today.prev_year.strftime("%y")
+    current_year = Date.today.strftime("%y")
+    next_year = Date.today.next_year.strftime("%y")
 
-  def stringify_season_id(season_id)
-    if season_id == :current
-      prev_year = Date.today.prev_year.strftime("%y")
-      current_year = Date.today.strftime("%y")
-      next_year = Date.today.next_year.strftime("%y")
-
-      Date.today.month < 10 ? "#{prev_year}#{current_year}" : "#{current_year}#{next_year}"
-    else
-      season_id
-    end
+    Date.today.month < 10 ? "#{prev_year}#{current_year}" : "#{current_year}#{next_year}"
   end
+
+  private
 
   def get_events
     result = []

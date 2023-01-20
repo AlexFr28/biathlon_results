@@ -8,8 +8,18 @@ class FrontController < ApplicationController
 
   def home
     @current_year = Date.today.strftime("%Y").to_i
-    get_current_season
-    # truc = biathlon_api_service.events(season_id: "2223", level: BiathlonResults::LEVEL[:"BMW IBU WC"])
+    @options_for_select = options_for_select_season_ids
+
+    @selected_season_id = if params[:season].present?
+      if check_season(params[:season])
+        get_season(params[:season])
+        params[:season]
+      else
+        redirect_to root_path
+      end
+    else
+      Season.current_season_id
+    end
   end
 
   def competitions_of_event
