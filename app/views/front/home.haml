@@ -1,13 +1,13 @@
 .row
   .col.s12.m2.l3
-    .input-field
-      = select_year(Date.today, start_year: 2000, end_year: @current_year)
+    #choose-year.input-field
+      = select_tag(:year, options_for_select(@options_for_select, @season.id))
 
   .col.s12.m10.l9
     %ul.events.collapsible
       %li
-        .collapsible-header{style: "cursor: initial;"}= "Saison #{}"
-      - @current_season.events.each_with_index do |event, index|
+        .collapsible-header{style: "cursor: initial;"}= "Calendrier #{@season.name}"
+      - @season.events.each_with_index do |event, index|
         %li{id: "event-#{index}"}
           .collapsible-header{"data-event-id": event.ibu_id, "data-element-id": "event-#{index}", class: "#{"grey lighten-3" if event.etat.nil?}"}
             %span.event--date
@@ -23,3 +23,8 @@
             %i.fa.fa-angle-down.dcm-toggle-icon
           .collapsible-body
             in progress...
+
+:javascript
+  $("#choose-year").change(function() {
+    window.location = "?season=" + $("#year").val();
+  });

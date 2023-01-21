@@ -6,4 +6,4 @@
         %span.hour= competition["StartTime"].to_datetime.strftime("%H:%M")
       %span.competition--name= competition["ShortDescription"]
       - if competition["StatusText"] == "Final"
-        = link_to("see result ->", race_path(race_id: competition["RaceId"]), class: "right")
+        = link_to("voir les résultats ->", race_path(race_id: competition["RaceId"]), class: "right", target: :blank)

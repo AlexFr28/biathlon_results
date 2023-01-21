@@ -10,16 +10,8 @@ class FrontController < ApplicationController
     @current_year = Date.today.strftime("%Y").to_i
     @options_for_select = options_for_select_season_ids
 
-    @selected_season_id = if params[:season].present?
-      if check_season(params[:season])
-        get_season(params[:season])
-        params[:season]
-      else
-        redirect_to root_path
-      end
-    else
-      Season.current_season_id
-    end
+    @season = Season.find(params[:season] || Season.current_season_id)
+    redirect_to root_path if @season.nil?
   end
 
   def competitions_of_event

@@ -1,11 +1,15 @@
 class Season
 
   attr_accessor :id
+  attr_accessor :name
   attr_accessor :events
 
-  def initialize(season_id)
-    @id = season_id
-    @events = get_events
+  def self.find(season_id)
+    if check_season_id(season_id)
+      Season.new(season_id)
+    else
+      nil
+    end
   end
 
   def self.current_season_id
@@ -16,7 +20,28 @@ class Season
     Date.today.month < 10 ? "#{prev_year}#{current_year}" : "#{current_year}#{next_year}"
   end
 
+  def initialize(season_id)
+      @id = season_id
+      @name = get_name(season_id)
+      @events = get_events
+  end
+
   private
+
+  def self.check_season_id(season_id)
+    return false if season_id.nil?
+    return false if season_id.length != 4
+    start_year = season_id.first(2)
+    end_year = season_id.last(2)
+    return false if start_year.to_i != end_year.to_i - 1
+    true
+  end
+
+  def get_name(season_id)
+    start_year = season_id.first(2)
+    end_year = season_id.last(2)
+    "20#{start_year}-20#{end_year}"
+  end
 
   def get_events
     result = []
