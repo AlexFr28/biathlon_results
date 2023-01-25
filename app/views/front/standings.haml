@@ -4,13 +4,13 @@
     %thead
       %tr
         %td{colspan: "3"}
-        - @current_season.events.each_with_index do |event, index|
+        - @season.events.each_with_index do |event, index|
           %td.column.small-border-left{colspan: event.competitions[@gender].reject{|comp| comp.to_s == "Relay"}.size, class: "#{"border-left" if index == 0}"}= event.location
       %tr
-        %td Rk
+        %td{width: "50"} Rk
         %td{style: "width: 250px;"} Name
         %td.border.center-align{style: "width: 55px;"} Total
-        - @current_season.events.each do |event|
+        - @season.events.each do |event|
           - event.competitions[@gender].each_with_index do |competition, index|
             - next if competition.to_s == "Relay"
             %td.column.race{class: "#{" small-border-left" if index == 0}", "data-ibu_id": competition.ibu_id}

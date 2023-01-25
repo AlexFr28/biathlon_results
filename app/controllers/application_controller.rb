@@ -1,7 +1,7 @@
 class ApplicationController < ActionController::Base
 
-  def get_current_season
-    @current_season ||= Season.new(:current)
+  def get_season
+    @season = Season.find(params[:season] || Season.current_season_id)
   end
 
   def options_for_select_season_ids

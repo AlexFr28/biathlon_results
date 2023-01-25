@@ -2,6 +2,8 @@ require 'BiathlonResults'
 
 class FrontController < ApplicationController
   layout "application"
+
+  before_action :get_season, only: [:home, :standings]
   before_action :set_body_classes, only: [:home, :race, :standings]
 
   AVAILABLE_GENDERS = [:men, :women]
@@ -10,7 +12,6 @@ class FrontController < ApplicationController
     @current_year = Date.today.strftime("%Y").to_i
     @options_for_select = options_for_select_season_ids
 
-    @season = Season.find(params[:season] || Season.current_season_id)
     redirect_to root_path if @season.nil?
   end
 
@@ -31,7 +32,6 @@ class FrontController < ApplicationController
 
   def standings
     @standings = true
-    get_current_season
     @gender = params[:gender].to_sym
   end
 
@@ -41,7 +41,7 @@ class FrontController < ApplicationController
         competition = Competition.new(ibu_id: params[:ibu_id])
         competition.get_results
 
-        render json: competition.results.first(5).to_json
+        render json: competition.results.to_json
       end
     end
   end

@@ -48,14 +48,14 @@ class Season
     events = BiathlonResults::Service.new.events(season_id: id, level: BiathlonResults::LEVEL[:"BMW IBU WC"])
     events.each do |event|
       result << Event.new(
-        ibu_id:      event["EventId"],
+        ibu_id:            event["EventId"],
         short_nationality: event["Nat"],
-        nationality: event["NatLong"],
-        location:    event["ShortDescription"],
-        start_date:  event["StartDate"],
-        end_date:    event["EndDate"],
-        etat:        event["EventSeriesNr"],
-        description: event["Description"]
+        nationality:       event["NatLong"],
+        location:          event["ShortDescription"],
+        start_date:        event["StartDate"],
+        end_date:          event["EndDate"],
+        etat:              event["EventSeriesNr"],
+        description:       event["Description"]
       )
     end
     result

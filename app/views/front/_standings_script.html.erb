@@ -25,15 +25,32 @@
     if (currentIndex < elements.length) {
       if (elements[currentIndex].point != null) {
         var element = elements[currentIndex];
-        var endTable = $("#results tbody:last-child");
-        var row = '<tr style="display: none;" id= ' + element.ibu_athlete_id + ' class="athlete_row">' +
-          '<td class="rank">' + element.rank + '</td>' +
-          '<td class="name">' + element.name + '</td>' +
-          '<td class="total-point center-align border">' + element.point + '</td>' +
-          '<td class="center-align">' + contentForRank(element.rank, element.point) + '</td>' +
-          '</tr>';
-        endTable.append(row);
-        $('#' + element.ibu_athlete_id + '').fadeIn(400, function() {
+        // console.log(element.rank, element.name, element.point);
+        var target = $("#" + element.ibu_athlete_id);
+        if (target.length) {
+          target.append('<td class="center-align new-element">' + contentForRank(element.rank, element.point) + '</td>');
+          var totalPointElement = target.find('td.total-point');
+          var currentPoints = totalPointElement.text();
+          totalPointElement.text(parseInt(currentPoints) + parseInt(element.point));
+
+          // $(".new-element").fadeIn(100);
+        } else {
+          var endTable = $("#results tbody:last-child");
+          var row = '<tr style="display: none;" id= ' + element.ibu_athlete_id + ' class="athlete_row">' +
+            '<td class="rank">' + element.rank + '</td>' +
+            '<td class="name">' + element.name + '</td>' +
+            '<td class="total-point center-align border">' + element.point + '</td>'
+
+          for(let i = 0; i < currentIndexRace; i++) {
+            row += '<td class="center-align"> - </td>'
+          }
+
+          row += '<td class="center-align">' + contentForRank(element.rank, element.point) + '</td>' +
+            '</tr>';
+          endTable.append(row);
+        }
+
+        $('#' + element.ibu_athlete_id + '').fadeIn(100, function() {
           $(document).scrollTop($(document).height());
           addResultInView(elements, currentIndex + 1, currentIndexRace);
         });
@@ -43,25 +60,36 @@
       }
     }
     else {
-      if (currentIndexRace == 0) addNextRaceResult(currentIndexRace + 1);
+      // on replit les trous
+      $(".athlete_row").each(function() {
+        var countTd = $(this).find('td').length;
+        if (countTd - 3 < currentIndexRace + 1) $(this).append('<td class="center-align"> - </td>');
+      });
+
+      // on passe à la course suivante
+      // if (currentIndexRace == 0) addNextRaceResult(currentIndexRace + 1);
+      addNextRaceResult(currentIndexRace + 1);
     }
   }
 
-  function addTdInTr(data, elements, index) {
+  function addTdInTr(data, elements, index, raceNumber) {
+    // console.log("index", index);
+    // console.log("elements", elements);
     if (index < elements.length) {
-      var element = $.parseHTML(elements[index]);
-      console.log(elements[index]);
-      console.log(element);
+      var element = elements[index];
+      // console.log(elements[index]);
+      // console.log(element);
       var data_athlete = data.find(athlete => athlete.ibu_athlete_id === element.id);
       if (data_athlete == undefined) {
-        var lastElement = $('<td style="display: none;"></td>').insertAfter(element.last());
+        console.log("athlete non trouvé");
+        // var lastElement = $('<td style=""></td>').insertAfter(elements.last());
       }
       else {
-        var lastElement = $('<td style="display: none;">' + data_athlete.point + '</td>').insertAfter(element.last());
+        // var lastElement = $('<td style="display: none;">' + data_athlete.point + '</td>').insertAfter(elements.last());
       }
       // console.log($.parseHTML(lastElement));
 
-      addTdInTr(data, elements, index + 1);
+      if (index < elements.length) addTdInTr(data, elements, index + 1, raceNumber);
     }
   }
 
@@ -71,7 +99,7 @@
       $.ajax('competition/' + raceIds[currentRaceIdIndex] + '/results.json', {
         success: function(data, textStatus, jqXHR) {
           // console.log("success");
-          addTdInTr(data, $(".athlete_row"), 0);
+          // addTdInTr(data, $(".athlete_row"), 0, currentRaceIdIndex);
           // console.log("first element", data[0]);
           addResultInView(data, 0, currentRaceIdIndex);
         },
