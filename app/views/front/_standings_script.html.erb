@@ -6,16 +6,16 @@
     result = ""
     switch (rank) {
       case "1":
-        result = '<div class="medal-circle first-place"><div>' + points + '</div></div>';
+        result = '<div style="width: 30px;" class="medal-circle first-place"><div>' + points + '</div></div>';
         break;
       case "2":
-        result = '<div class="medal-circle second-place"><div>' + points + '</div></div>';
+        result = '<div style="width: 30px;" class="medal-circle second-place"><div>' + points + '</div></div>';
         break;
       case "3":
-        result = '<div class="medal-circle third-place"><div>' + points + '</div></div>';
+        result = '<div style="width: 30px;" class="medal-circle third-place"><div>' + points + '</div></div>';
         break;
       default:
-        result = '<div>' + points + '</div>';
+        result = '<div style="width: 30px;">' + points + '</div>';
     }
     return result;
   }
@@ -42,7 +42,7 @@
             '<td class="total-point center-align border">' + element.point + '</td>'
 
           for(let i = 0; i < currentIndexRace; i++) {
-            row += '<td class="center-align"> - </td>'
+            row += '<td class="center-align"><div style="width: 30px;"> - </div></td>'
           }
 
           row += '<td class="center-align">' + contentForRank(element.rank, element.point) + '</td>' +
@@ -51,7 +51,7 @@
         }
 
         $('#' + element.ibu_athlete_id + '').fadeIn(100, function() {
-          $(document).scrollTop($(document).height());
+          // $(document).scrollTop($(document).height());
           addResultInView(elements, currentIndex + 1, currentIndexRace);
         });
       }
@@ -63,7 +63,7 @@
       // on replit les trous
       $(".athlete_row").each(function() {
         var countTd = $(this).find('td').length;
-        if (countTd - 3 < currentIndexRace + 1) $(this).append('<td class="center-align"> - </td>');
+        if (countTd - 3 < currentIndexRace + 1) $(this).append('<td class="center-align"><div style="width: 30px;"> - </div></td>');
       });
 
       // on passe à la course suivante
